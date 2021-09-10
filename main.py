@@ -463,7 +463,7 @@ async def caption(bot, message: Message):
         if "Eshghe Mashroot" in m:
             fa += "#عشق_مشروط"
             X = "Eshghe Mashroot"
-        if "Cukurova" in m:
+        if m.__contains__("Cukurova") and not m.__contains__("Bir"):
             fa += "#روزی_روزگاری_چکوروا"
             X = "Cukurova"
         if "Yek Jonun Yek Eshgh" in m:
