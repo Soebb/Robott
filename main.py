@@ -53,9 +53,9 @@ async def start(bot, update):
 @Bot.on_message(filters.channel & filters.audio)
 async def tag(bot, m):
     if (m.chat.id == -1001516208383) and ("wikiseda" in m.caption):
-        await m.copy(chat_id=-1001271917335)
-        await m.delete()
-        return
+        chat = -1001271917335
+    else:
+        chat = m.chat.id
     fname = m.audio.file_name
 
     if fname.__contains__("@") or fname.__contains__("["):
@@ -183,7 +183,7 @@ async def tag(bot, m):
 
     try:
         await bot.send_photo(
-            chat_id=m.chat.id,
+            chat_id=chat,
             caption="🎤" + artist + " - " + title + "🎼" + "\n\n" + "#" + artist.split(f"{artist}", 0)[0].replace(" ", "_") + " #" + title.split(f"{title}", 0)[0].replace(" ", "_") + "\n\n" + "🆔👉 @dlmacvin_music",
             photo=open('artwork.jpg', 'rb')
         )
@@ -197,7 +197,7 @@ async def tag(bot, m):
         os.system("ffmpeg -ss " + str(length) + " -t 30 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
     else:
         os.system("ffmpeg -ss 0 -t 30 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
-    sendVoice(m.chat.id, "temp/output.ogg", f"🎤{artist} - {title}🎼\n\n🆔👉 @dlmacvin_music")
+    sendVoice(chat, "temp/output.ogg", f"🎤{artist} - {title}🎼\n\n🆔👉 @dlmacvin_music")
     
     music.remove_tag('comment')
     music.remove_tag('artist')
@@ -217,7 +217,7 @@ async def tag(bot, m):
     caption = "🎤" + artist + " - " + title + "🎼" + "\n\n" + "#" + artist.split(f"{artist}", 0)[0].replace(" ", "_") + " #" + title.split(f"{title}", 0)[0].replace(" ", "_") + "\n\n" + "🆔👉 @dlmacvin_music"
     try:
         await bot.send_audio(
-            chat_id=m.chat.id,
+            chat_id=chat,
             file_name=filename + ".mp3",
             caption=caption,
             thumb=open('artwork.jpg', 'rb'),
