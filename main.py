@@ -53,8 +53,8 @@ async def start(bot, update):
 @Bot.on_message(filters.channel & filters.audio)
 async def tag(bot, m):
     if (m.chat.id == -1001516208383) and ("wikiseda" in m.caption):
-        m.copy(chat_id=-1001271917335)
-        m.delete()
+        await m.copy(chat_id=-1001271917335)
+        await m.delete()
         return
     fname = m.audio.file_name
 
