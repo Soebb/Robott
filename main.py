@@ -1,9 +1,6 @@
-import time
 from configs import Config
 from pyrogram import Client, filters, idle
-from pyrogram.errors import QueryIdInvalid
-from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, InlineQuery, InlineQueryResultArticle, \
-    InputTextMessageContent
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 import os
 import io
 from PIL import Image
@@ -51,17 +48,16 @@ async def start(bot, update):
         disable_web_page_preview=True,
         reply_markup=reply_markup
     )
-Musi = "-1001271917335 -1001516208383"
-Musics = set(int(x) for x in Musi.split())
 
 
 @Bot.on_message(filters.channel & filters.audio)
 async def tag(bot, m):
-    if (m.chat.id == -1001516208383):
-        if "wikiseda" in m.caption:
-            m.copy(chat_id=-1001271917335)
-
+    if (m.chat.id == -1001516208383) and ("wikiseda" in m.caption):
+        m.copy(chat_id=-1001271917335)
+        m.delete()
+        return
     fname = m.audio.file_name
+
     if fname.__contains__("@") or fname.__contains__("["):
         first = fname.split(' ')[0]
         if "@" in first:
@@ -77,7 +73,6 @@ async def tag(bot, m):
     else:
         filename = fname
   
-    
     try:
         m = await bot.get_messages(m.chat.id, m.message_id)
         file = await m.download(file_name="temp/file.mp3")
@@ -96,7 +91,6 @@ async def tag(bot, m):
     except Exception as e:
         print(e)
     
-    
     if g.__contains__("@") or g.__contains__("["):
         first = g.split(' ')[0]
         if "@" in first:
@@ -111,7 +105,6 @@ async def tag(bot, m):
             genre = g.split("@")[-2]
     else:
         genre = g
-
     
     if l.__contains__("@") or l.__contains__("["):
         first = l.split(' ')[0]
@@ -188,53 +181,24 @@ async def tag(bot, m):
     else:
         artist = a
 
-    if (m.chat.id == -1001271917335) and ("wikiseda" in m.caption):
+    try:
         await bot.send_photo(
             chat_id=m.chat.id,
             caption="🎤" + artist + " - " + title + "🎼" + "\n\n" + "#" + artist.split(f"{artist}", 0)[0].replace(" ", "_") + " #" + title.split(f"{title}", 0)[0].replace(" ", "_") + "\n\n" + "🆔👉 @dlmacvin_music",
             photo=open('artwork.jpg', 'rb')
         )
-    elif (m.chat.id == -1001516208383) and (not "wikiseda" in m.caption):
-        await bot.send_photo(
-            chat_id=m.chat.id,
-            caption="🎤" + artist + " - " + title + "🎼" + "\n\n" + "#" + artist.split(f"{artist}", 0)[0].replace(" ", "_") + " #" + title.split(f"{title}", 0)[0].replace(" ", "_") + "\n\n" + "🆔👉 @dlmacvin_music",
-            photo=open('artwork.jpg', 'rb')
-        )
-    elif not m.chat.id in Musics:
-        await bot.send_photo(
-            chat_id=m.chat.id,
-            caption="🎤" + artist + " - " + title + "🎼" + "\n\n" + "#" + artist.split(f"{artist}", 0)[0].replace(" ", "_") + " #" + title.split(f"{title}", 0)[0].replace(" ", "_") + "\n\n" + "🆔👉 @dlmacvin_music",
-            photo=open('artwork.jpg', 'rb')
-        )
+    except Exception as errr:
+        print(errr)
     
-    if (m.chat.id == -1001271917335) and ("wikiseda" in m.caption):
-        audio = MP3(file)
-        length = audio.info.length * 0.33
-        l2 = (audio.info.length * 0.33) + 30
-        if audio.info.length > l2:
-            os.system("ffmpeg -ss " + str(length) + " -t 30 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
-        else:
-            os.system("ffmpeg -ss 0 -t 30 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
-        sendVoice(m.chat.id, "temp/output.ogg", f"🎤{artist} - {title}🎼\n\n🆔👉 @dlmacvin_music")
-    elif (m.chat.id == -1001516208383) and (not "wikiseda" in m.caption):
-        audio = MP3(file)
-        length = audio.info.length * 0.33
-        l2 = (audio.info.length * 0.33) + 30
-        if audio.info.length > l2:
-            os.system("ffmpeg -ss " + str(length) + " -t 30 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
-        else:
-            os.system("ffmpeg -ss 0 -t 30 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
-        sendVoice(m.chat.id, "temp/output.ogg", f"🎤{artist} - {title}🎼\n\n🆔👉 @dlmacvin_music")
-    elif not m.chat.id in Musics:
-        audio = MP3(file)
-        length = audio.info.length * 0.33
-        l2 = (audio.info.length * 0.33) + 30
-        if audio.info.length > l2:
-            os.system("ffmpeg -ss " + str(length) + " -t 30 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
-        else:
-            os.system("ffmpeg -ss 0 -t 30 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
-        sendVoice(m.chat.id, "temp/output.ogg", f"🎤{artist} - {title}🎼\n\n🆔👉 @dlmacvin_music")
-
+    audio = MP3(file)
+    length = audio.info.length * 0.33
+    l2 = (audio.info.length * 0.33) + 30
+    if audio.info.length > l2:
+        os.system("ffmpeg -ss " + str(length) + " -t 30 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
+    else:
+        os.system("ffmpeg -ss 0 -t 30 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
+    sendVoice(m.chat.id, "temp/output.ogg", f"🎤{artist} - {title}🎼\n\n🆔👉 @dlmacvin_music")
+    
     music.remove_tag('comment')
     music.remove_tag('artist')
     music.remove_tag('lyrics')
@@ -251,7 +215,7 @@ async def tag(bot, m):
     music['comment'] = comment
     music.save()
     caption = "🎤" + artist + " - " + title + "🎼" + "\n\n" + "#" + artist.split(f"{artist}", 0)[0].replace(" ", "_") + " #" + title.split(f"{title}", 0)[0].replace(" ", "_") + "\n\n" + "🆔👉 @dlmacvin_music"
-    if (m.chat.id == -1001271917335) and ("wikiseda" in m.caption):
+    try:
         await bot.send_audio(
             chat_id=m.chat.id,
             file_name=filename + ".mp3",
@@ -259,31 +223,15 @@ async def tag(bot, m):
             thumb=open('artwork.jpg', 'rb'),
             audio="temp/file.mp3"
         )
-    elif (m.chat.id == -1001516208383) and (not "wikiseda" in m.caption):
-        await bot.send_audio(
-            chat_id=m.chat.id,
-            file_name=filename + ".mp3",
-            caption=caption,
-            thumb=open('artwork.jpg', 'rb'),
-            audio="temp/file.mp3"
-        )
-    elif not m.chat.id in Musics:
-        await bot.send_audio(
-            chat_id=m.chat.id,
-            file_name=filename + ".mp3",
-            caption=caption,
-            thumb=open('artwork.jpg', 'rb'),
-            audio="temp/file.mp3"
-        )
+    except Exception as erro:
+        print(erro)
     
-
 def sendVoice(chat_id,file_name,text):
     url = "https://api.telegram.org/bot%s/sendVoice"%(BOT_TOKEN)
     files = {'voice': open(file_name, 'rb')}
     data = {'chat_id' : chat_id, 'caption' : text}
     r= requests.post(url, files=files, data=data)
    
-
 
 chnls = "-1001516208383 -1001166919373 -1001437520825 -1001071120514 -1001546442991 -1001322014891 -1001409508844 -1001537554747 -1001462444753 -1001146657589 -1001592624165 -1001588137496"
 CHANNELS = set(int(x) for x in chnls.split())
