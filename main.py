@@ -949,8 +949,7 @@ async def caption(bot, message: Message):
         F4 = None
         # Duble Haaye 3 Ya 4 Filee
         if (message.chat.id == -1001457054266) and ((X in NoCopy) or (X in Copy)):
-            if X in Copy:
-                kanal = -1001457054266
+            kanal = -1001352276966
             
             if "Duble" in N:
                 M240 = f"{Fucc}\n🔹کیفیت : 240 \n🆔👉 @dlmacvin_new | {fa}"
@@ -1001,8 +1000,8 @@ async def caption(bot, message: Message):
                         await F1.delete()
                         await F2.delete()
                         await F3.delete()
-                    if (X in Copy) and (kap2 is not None):
-                        await bot.copy_message(chat_id=kanal, from_chat_id=-1001441684079, message_id=msgid, caption=kap2, parse_mode='markdown')
+                    if kap2 is not None:
+                        await bot.copy_message(chat_id=-1001457054266, from_chat_id=-1001441684079, message_id=msgid, caption=kap2, parse_mode='markdown')
             
             # Zirnevis haaye 6 Ya 8 Filee
             elif "Hard-Sub" in N:
@@ -1081,7 +1080,7 @@ async def caption(bot, message: Message):
                         await F1.delete()
                         await F2.delete()
                         await F3.delete()
-                    if (X in Copy) and (kap2 is not None):
+                    if kap2 is not None:
                         await bot.copy_message(chat_id=-1001457054266, from_chat_id=-1001441684079, message_id=msgid, caption=f"{kap2}", parse_mode='markdown')
                       
                       
