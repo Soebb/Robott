@@ -2,12 +2,6 @@ from configs import Config
 from pyrogram import Client, filters, idle
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 import os
-import io
-from PIL import Image
-import mutagen
-from mutagen.mp3 import MP3
-import requests
-from music_tag import load_file
 from pyrogram.errors import FloodWait
 
 
@@ -49,190 +43,7 @@ async def start(bot, update):
         reply_markup=reply_markup
     )
 
-
-@Bot.on_message(filters.channel & filters.audio)
-async def tag(bot, m):
-    if (m.chat.id == -1001516208383) and ("wikiseda" in m.caption):
-        chat = -1001271917335
-    else:
-        chat = m.chat.id
-    fname = m.audio.file_name
-
-    if fname.__contains__("@") or fname.__contains__("["):
-        first = fname.split(' ')[0]
-        if "@" in first:
-            filename = fname.split(f'{first}', -1)
-        elif fname.__contains__("(@") and not "@" in first:
-            filename = fname.split("(@")[-2]
-        elif fname.__contains__("[@") and not "@" in first:
-            filename = fname.split("[@")[-2]
-        elif fname.__contains__("[") and not "@" in first:
-            filename = fname.split("[")[-2]
-        elif (not "@" in first) and (not fname.__contains__("(@") or fname.__contains__("[") or fname.__contains__("[@")):
-            filename = fname.split("@")[-2]
-    else:
-        filename = fname
-  
-    try:
-        m = await bot.get_messages(m.chat.id, m.message_id)
-        file = await m.download(file_name="temp/file.mp3")
-        await m.delete()
-        music = load_file("temp/file.mp3")
-        t = f"{music['title']}"
-        a = f"{music['artist']}"
-        al = f"{music['album']}"
-        g = f"{music['genre']}"
-        c = f"{music['comment']}"
-        l = f"{music['lyrics']}"
-        ar = music['artwork']
-        image_data = ar.value.data
-        img = Image.open(io.BytesIO(image_data))
-        img.save("artwork.jpg")
-    except Exception as e:
-        print(e)
-    
-    if g.__contains__("@") or g.__contains__("["):
-        first = g.split(' ')[0]
-        if "@" in first:
-            genre = g.split(f'{first}', -1)
-        elif g.__contains__("(@") and not "@" in first:
-            genre = g.split("(@")[-2]
-        elif g.__contains__("[@") and not "@" in first:
-            genre = g.split("[@")[-2]
-        elif g.__contains__("[") and not "@" in first:
-            genre = g.split("[")[-2]
-        elif (not "@" in first) and (not g.__contains__("(@") or g.__contains__("[") or g.__contains__("[@")):
-            genre = g.split("@")[-2]
-    else:
-        genre = g
-    
-    if l.__contains__("@") or l.__contains__("["):
-        first = l.split(' ')[0]
-        if "@" in first:
-            lyrics = l.split(f'{first}', -1)
-        elif l.__contains__("(@") and not "@" in first:
-            lyrics = l.split("(@")[-2]
-        elif l.__contains__("[@") and not "@" in first:
-            lyrics = l.split("[@")[-2]
-        elif l.__contains__("[") and not "@" in first:
-            lyrics = l.split("[")[-2]
-        elif (not "@" in first) and (not l.__contains__("(@") or l.__contains__("[") or l.__contains__("[@")):
-            lyrics = l.split("@")[-2]
-    else:
-        lyrics = l
-
-    if c.__contains__("@") or c.__contains__("["):
-        first = c.split(' ')[0]
-        if "@" in first:
-            comment = c.split(f'{first}', -1)
-        elif c.__contains__("(@") and not "@" in first:
-            comment = c.split("(@")[-2]
-        elif c.__contains__("[@") and not "@" in first:
-            comment = c.split("[@")[-2]
-        elif c.__contains__("[") and not "@" in first:
-            comment = c.split("[")[-2]
-        elif (not "@" in first) and (not c.__contains__("(@") or c.__contains__("[") or c.__contains__("[@")):
-            comment = c.split("@")[-2]
-    else:
-        comment = c
-
-    if t.__contains__("@") or t.__contains__("["):
-        first = t.split(' ')[0]
-        if "@" in first:
-            title = t.split(f'{first}', -1)
-        elif t.__contains__("(@") and not "@" in first:
-            title = t.split("(@")[-2]
-        elif t.__contains__("[@") and not "@" in first:
-            title = t.split("[@")[-2]
-        elif t.__contains__("[") and not "@" in first:
-            title = t.split("[")[-2]
-        elif (not "@" in first) and (not t.__contains__("(@") or t.__contains__("[") or t.__contains__("[@")):
-            title = t.split("@")[-2]
-    else:
-        title = t
-
-    if al.__contains__("@") or al.__contains__("["):
-        first = al.split(' ')[0]
-        if "@" in first:
-            album = al.split(f'{first}', -1)
-        elif al.__contains__("(@") and not "@" in first:
-            album = al.split("(@")[-2]
-        elif al.__contains__("[@") and not "@" in first:
-            album = al.split("[@")[-2]
-        elif al.__contains__("[") and not "@" in first:
-            album = al.split("[")[-2]
-        elif (not "@" in first) and (not al.__contains__("(@") or al.__contains__("[") or al.__contains__("[@")):
-            album = al.split("@")[-2]
-    else:
-        album = al
-
-    if a.__contains__("@") or a.__contains__("["):
-        first = a.split(' ')[0]
-        if "@" in first:
-            artist = a.split(f'{first}', -1)
-        elif a.__contains__("(@") and not "@" in first:
-            artist = a.split("(@")[-2]
-        elif a.__contains__("[@") and not "@" in first:
-            artist = a.split("[@")[-2]
-        elif a.__contains__("[") and not "@" in first:
-            artist = a.split("[")[-2]
-        elif (not "@" in first) and (not a.__contains__("(@") or a.__contains__("[") or a.__contains__("[@")):
-            artist = a.split("@")[-2]
-    else:
-        artist = a
-
-    try:
-        await bot.send_photo(
-            chat_id=chat,
-            caption="🎤" + artist + " - " + title + "🎼" + "\n\n" + "#" + artist.split(f"{artist}", 0)[0].replace(" ", "_") + " #" + title.split(f"{title}", 0)[0].replace(" ", "_") + "\n\n" + "🆔👉 @dlmacvin_music",
-            photo=open('artwork.jpg', 'rb')
-        )
-    except Exception as errr:
-        print(errr)
-    
-    audio = MP3(file)
-    length = audio.info.length * 0.33
-    l2 = (audio.info.length * 0.33) + 30
-    if audio.info.length > l2:
-        os.system("ffmpeg -ss " + str(length) + " -t 30 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
-    else:
-        os.system("ffmpeg -ss 0 -t 30 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
-    sendVoice(chat, "temp/output.ogg", f"🎤{artist} - {title}🎼\n\n🆔👉 @dlmacvin_music")
-    
-    music.remove_tag('comment')
-    music.remove_tag('artist')
-    music.remove_tag('lyrics')
-    music.remove_tag('title')
-    music.remove_tag('album')
-    music.remove_tag('genre')
-    music.remove_tag('artwork')
-    music['artwork'] = open('artwork.jpg', 'rb').read()
-    music['artist'] = "@dlmacvin_music"
-    music['title'] = title + "[@dlmacvin_music]"
-    music['album'] = album
-    music['lyrics'] = lyrics
-    music['genre'] = genre 
-    music['comment'] = comment
-    music.save()
-    caption = "🎤" + artist + " - " + title + "🎼" + "\n\n" + "#" + artist.split(f"{artist}", 0)[0].replace(" ", "_") + " #" + title.split(f"{title}", 0)[0].replace(" ", "_") + "\n\n" + "🆔👉 @dlmacvin_music"
-    try:
-        await bot.send_audio(
-            chat_id=chat,
-            file_name=filename + ".mp3",
-            caption=caption,
-            thumb=open('artwork.jpg', 'rb'),
-            audio="temp/file.mp3"
-        )
-    except Exception as erro:
-        print(erro)
-    
-def sendVoice(chat_id,file_name,text):
-    url = "https://api.telegram.org/bot%s/sendVoice"%(BOT_TOKEN)
-    files = {'voice': open(file_name, 'rb')}
-    data = {'chat_id' : chat_id, 'caption' : text}
-    r= requests.post(url, files=files, data=data)
-   
-
+        
 chnls = "-1001516208383 -1001166919373 -1001437520825 -1001071120514 -1001546442991 -1001322014891 -1001409508844 -1001537554747 -1001462444753 -1001146657589 -1001592624165 -1001588137496"
 CHANNELS = set(int(x) for x in chnls.split())
 
@@ -750,13 +561,13 @@ async def caption(bot, message: Message):
             if '240P' in m:
                 Q += '240'
             if m.__contains__("720P") or m.__contains__("1080P") or m.__contains__("240P") or m.__contains__("480P"):
-                G = f"\n🔹کیفیت : {Q}"
+                G = f"🔹کیفیت : {Q}"
                 q = G.replace(".1", " ").replace(".mkv", " ")
             else:
                 q = ""
             YrR = f"{YR.replace('720P', '').replace('480P', '').replace('1080P', '').replace('240P', '').replace('mkv', '').replace('mp4', '')}"
             
-            msg = await message.edit(f"♨️ فیلم {f.replace('Hard-Sub', '').replace(' 20', '')} بازیرنویس چسبیده{YrR} {q} \n🔻تماشای آنلاین بدون فیلتر شکن: \n🆔👉 @dlmacvin_new")
+            msg = await message.edit(f"♨️ فیلم {f.replace('Hard-Sub', '').replace(' 20', '').replace('  ', ' ')} بازیرنویس چسبیده{YrR} \n{q.replace('  ', ' ')} \n🔻تماشای آنلاین بدون فیلتر شکن: \n🆔👉 @dlmacvin_new")
          
 
         # Start Auto Forward/Banner
