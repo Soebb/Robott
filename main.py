@@ -523,13 +523,13 @@ async def caption(bot, message: Message):
             H = fa.replace("_", " ").replace("#", "")
             if not "Hard-Sub" in N:
                 Fucc += f"🔺{H} قسمت {E} \n🔸 دوبله فارسی"
-                Fuc = f"{Fucc}{q} \n🆔👉 @dlmacvin_new | {fa}"
+                Fuc = f"{Fucc}{q.replace('  ', ' ')} \n🆔👉 @dlmacvin_new | {fa}"
 
                 print(Fuc)
                 msg = await message.edit(Fuc)
             else:
                 Fucc += f"♨️ سریال{fa} ( {n}) بازیرنویس چسبیده\n👌قسمت : {E.replace('Hard-Sub', '')}"
-                Fuc = f"{Fucc}{q} \n🔻تماشای آنلاین بدون فیلتر شکن: \n🆔👉 @dlmacvin_new"
+                Fuc = f"{Fucc}{q.replace('  ', ' ')} \n🔻تماشای آنلاین بدون فیلتر شکن: \n🆔👉 @dlmacvin_new"
 
                 print(Fuc)
                 msg = await message.edit(Fuc)
@@ -561,13 +561,13 @@ async def caption(bot, message: Message):
             if '240P' in m:
                 Q += '240'
             if m.__contains__("720P") or m.__contains__("1080P") or m.__contains__("240P") or m.__contains__("480P"):
-                G = f"🔹کیفیت : {Q}"
-                q = G.replace(".1", " ").replace(".mkv", " ")
+                G = f"\n🔹کیفیت : {Q}"
+                q = G.replace(".1", " ").replace(".mkv", " ").replace("  ", " ")
             else:
                 q = ""
             YrR = f"{YR.replace('720P', '').replace('480P', '').replace('1080P', '').replace('240P', '').replace('mkv', '').replace('mp4', '')}"
             
-            msg = await message.edit(f"♨️ فیلم {f.replace('Hard-Sub', '').replace(' 20', '').replace('  ', ' ')} بازیرنویس چسبیده{YrR} \n{q.replace('  ', ' ')} \n🔻تماشای آنلاین بدون فیلتر شکن: \n🆔👉 @dlmacvin_new")
+            msg = await message.edit(f"♨️ فیلم {f.replace('Hard-Sub', '').replace(' 20', '').replace('  ', ' ')} بازیرنویس چسبیده{YrR} {q} \n🔻تماشای آنلاین بدون فیلتر شکن: \n🆔👉 @dlmacvin_new")
          
 
         # Start Auto Forward/Banner
