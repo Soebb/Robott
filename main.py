@@ -52,7 +52,8 @@ async def caption(bot, message: Message):
     media = message.video or message.document
     if (message.chat.id == -1001516208383) and (media is not None) and (media.file_name is not None):
         await message.edit(f"{media.file_name.replace('.mp4', '').replace('.mkv', '').replace('.webm', '')}\n\n🆔👉 @dlmacvin_music")
-    if (media is not None) and (media.file_name is not None) and (not message.chat.id in CHANNELS):
+        return
+    if (media is not None) and (media.file_name is not None):
         m = media.file_name.replace("Fragmanı", "").replace("mp4", "").replace(".", " ").replace("_", " ").replace("Fragmanlarım", "").replace("ı", "i").replace("İ", "I").replace("ö", "o").replace("Ö", "O").replace("Ü", "U").replace("ü", "u").replace("ë", "e").replace("@dlmacvin2 -", "").replace("@dlmacvin -", "").replace("Ë", "E").replace("Ä", "A").replace("ç", "c").replace("Ç", "C").replace("ş", "s").replace("Ş", "S").replace("ğ", "g").replace("Ğ", "G").replace("ä", "a")
         D = m.replace("720P", "").replace("E20", "").replace("E120", "").replace("E220", "").replace("E320", "").replace("E420", "")
         N = m
@@ -386,9 +387,8 @@ async def caption(bot, message: Message):
             X = "Cocuk"
         if "Lise Devriyesi" in m:
             fa += "#گشت_مدرسه"
-            X = "Lise Devriyesi"	
-			
-	
+            X = "Lise Devriyesi"
+
 			
         if Z.__contains__("Fragman") or m.__contains__("Bolum") or m.__contains__("bolum") or Z.__contains__("fragman"):
             if " Bolum" in m:
@@ -569,6 +569,8 @@ async def caption(bot, message: Message):
             
             msg = await message.edit(f"♨️ فیلم {f.replace('Hard-Sub', '').replace(' 20', '').replace('  ', ' ')} بازیرنویس چسبیده{YrR} {q} \n🔻تماشای آنلاین بدون فیلتر شکن: \n🆔👉 @dlmacvin_new")
          
+        if message.chat.id in CHANNELS:
+            return
 
         # Start Auto Forward/Banner
         Copyright = "Kurulus Osman & Yemin & Son Yaz & Bir Zamanlar Kibris & Kazara Ask & Sadakatsiz & Iste Bu Benim Masalim & Hukumsuz & Gonul Dagi & Yesilcam & Ada Masali & Askin Tarifi & Baht Oyunu & Akinci & Teskilat & Saygi"
@@ -873,22 +875,6 @@ async def caption(bot, message: Message):
                         await F2.delete()
                         await F3.delete()
                         await F4.delete()
-                    elif not mkv1080 and not mp41080:
-                        gold = "f"
-                        if gold == "f":
-                            await mp4240p.copy(chat_id=kanal)
-                            await mp4480p.copy(chat_id=kanal)
-                            await mp4720p.copy(chat_id=kanal)
-                            F1 = await mkv240p.copy(chat_id=kanal)
-                            F2 = await mkv480p.copy(chat_id=kanal)
-                            F3 = await mkv720p.copy(chat_id=kanal)
-                        await bot.copy_message(chat_id=kanal, from_chat_id=-1001441684079, message_id=msgid, caption=f"{kap}", parse_mode='markdown')
-                        await F1.copy(chat_id=kanal)
-                        await F2.copy(chat_id=kanal)
-                        await F3.copy(chat_id=kanal)
-                        await F1.delete()
-                        await F2.delete()
-                        await F3.delete()
                     if kap2 is not None:
                         await bot.copy_message(chat_id=-1001457054266, from_chat_id=-1001441684079, message_id=msgid, caption=f"{kap2}", parse_mode='markdown')
                       
