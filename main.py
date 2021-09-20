@@ -31,8 +31,6 @@ User = Client(
 )
 
 
-
-
 @Bot.on_message(filters.command(["start"]))
 async def start(bot, update):
     text = START_TXT.format(update.from_user.mention)
@@ -565,8 +563,8 @@ async def caption(bot, message: Message):
                 q = ""
             YrR = f"{YR.replace('720P', '').replace('480P', '').replace('1080P', '').replace('240P', '').replace('mkv', '').replace('mp4', '')}"
             msg = await message.edit(f"♨️ فیلم {f.replace('Hard-Sub', '').replace(' 20', '').replace('  ', ' ')} بازیرنویس چسبیده{YrR} {q} \n🔻تماشای آنلاین بدون فیلتر شکن: \n🆔👉 @dlmacvin_new")
-            cpshn = f"
-            await bot.send_message(chat_id=-1001457054266, parse_mode='markdown')
+            cpshn = f"⬇️فیلم () {f.replace('Hard-Sub', '').replace(' 20', '').replace('  ', ' ')} ، بازیرنویس چسبیده \n\n⬇️1080👉\n⬇️720👉\n⬇️480👉\n⬇️240👉\n\n🆔👉 @dlmacvin_new"
+            await bot.send_message(chat_id=-1001457054266, text=cpshn, parse_mode='markdown')
 
         if message.chat.id in CHANNELS:
             return
