@@ -546,8 +546,6 @@ async def caption(bot, message: Message):
                 K = U.split()[0]
                 Y = '19' + f"{K}"
                 YR = f"\n👌سال : {Y}"
-           
-          
             if (not D.__contains__("19")) and (not D.__contains__("20")):
                 P = m.split("0P")[0]
                 f = P.replace("72", "").replace("48", "").replace("108", "").replace("24", "")
@@ -566,9 +564,10 @@ async def caption(bot, message: Message):
             else:
                 q = ""
             YrR = f"{YR.replace('720P', '').replace('480P', '').replace('1080P', '').replace('240P', '').replace('mkv', '').replace('mp4', '')}"
-            
             msg = await message.edit(f"♨️ فیلم {f.replace('Hard-Sub', '').replace(' 20', '').replace('  ', ' ')} بازیرنویس چسبیده{YrR} {q} \n🔻تماشای آنلاین بدون فیلتر شکن: \n🆔👉 @dlmacvin_new")
-         
+            cpshn = f"
+            await bot.send_message(chat_id=-1001457054266, parse_mode='markdown')
+
         if message.chat.id in CHANNELS:
             return
 
@@ -584,6 +583,7 @@ async def caption(bot, message: Message):
         kanal = None
         kap = None
         kap2 = None
+
         # Banner List
         if "Dunya Hali" in m:
             msgid = 2
@@ -673,7 +673,6 @@ async def caption(bot, message: Message):
         if "Yesilcam" in m:
             msgid = 20
             liink = "https://t.me/joinchat/8WqFLl-BjjhkYWU0"
-        
         if "Eshghe Mashroot" in m:
             msgid = 36
             liink = "https://t.me/joinchat/djHUcZrf3Z1lMGFk"
@@ -682,7 +681,6 @@ async def caption(bot, message: Message):
             liink = "https://t.me/joinchat/gxjiMKv7NRg0ZWI0"
         if "Saygi" in m:
             msgid = 28
-        
         if "Ada Masali" in m:
             msgid = 16
         if "Iste Bu Benim Masalim" in m:
@@ -692,7 +690,6 @@ async def caption(bot, message: Message):
         if "Be Eshghe To Sogand" in m:
             msgid = 35
             liink = "https://t.me/joinchat/WvQDR7-EQItkMjFk"
-        
         if X == "Cukurova":
             msgid = 38
             liink = "https://t.me/joinchat/AAAAAFWu07lSP1xokkxQAQ"
@@ -707,7 +704,6 @@ async def caption(bot, message: Message):
             kanal = -1001492549082
             liink = "https://t.me/joinchat/WPZ92vFSbeyHJk-e"
             Dublink = "https://t.me/joinchat/jH8N1M12K3A2ODY8"
-       
         if X == "2020":
             msgid = 31
             liink = "https://t.me/joinchat/0ShOWZms2mpjZjE8"
@@ -719,7 +715,6 @@ async def caption(bot, message: Message):
             liink = "https://t.me/joinchat/P9gAggky76PbWSNG"
 
         # Caption of Banner
-     
         hash = '#' + f'{X.replace(" ", "_")}'
         if kanal is None:
             if (X in Copy) and (liink is None):
