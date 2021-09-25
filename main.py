@@ -49,9 +49,12 @@ CHANNELS = set(int(x) for x in chnls.split())
 async def caption(bot, message):
     media = message.video or message.document
     if "Hardsub" in media.file_name:
-        await message.download("temp/f{message.id}")
-        await message.
-        os.remove(
+        await message.download(f"temp/f{message.message_id}")
+        if message.video:
+            await bot.send_video(chat_id=message.chat.id, video=f"temp/f{message.message_id}", file_name=f"
+        elif message.document:
+            await bot.send_document(chat_id=message.chat.id, document=f"temp/f{message.message_id}", 
+        os.remove(f"temp/f{message.message_id}")
         return
     if (message.chat.id == -1001516208383) and (media is not None) and (media.file_name is not None):
         await message.edit(f"{media.file_name.replace('.mp4', '').replace('.mkv', '').replace('.webm', '')}\n\n🆔👉 @dlmacvin_music")
