@@ -782,7 +782,7 @@ async def caption(bot, message: Message):
                             F2 = await mkv480p.copy(chat_id=kanal)
                             F3 = await mkv720p.copy(chat_id=kanal)
                             F4 = await mkv1080p.copy(chat_id=kanal)
-                        await bot.copy_message(chat_id=kanal, from_chat_id=-1001441684079, message_id=msgid, caption=kap, parse_mode='markdown')
+                        await bot.copy_message(chat_id=kanal, from_chat_id=-1001441684079, message_id=msgid, caption=kap2, parse_mode='markdown')
                         await F1.copy(chat_id=kanal)
                         await F2.copy(chat_id=kanal)
                         await F3.copy(chat_id=kanal)
@@ -797,15 +797,15 @@ async def caption(bot, message: Message):
                             F1 = await mkv240p.copy(chat_id=kanal)
                             F2 = await mkv480p.copy(chat_id=kanal)
                             F3 = await mkv720p.copy(chat_id=kanal)
-                        await bot.copy_message(chat_id=kanal, from_chat_id=-1001441684079, message_id=msgid, caption=kap, parse_mode='markdown')
+                        await bot.copy_message(chat_id=kanal, from_chat_id=-1001441684079, message_id=msgid, caption=kap2, parse_mode='markdown')
                         await F1.copy(chat_id=kanal)
                         await F2.copy(chat_id=kanal)
                         await F3.copy(chat_id=kanal)
                         await F1.delete()
                         await F2.delete()
                         await F3.delete()
-                    if kap2 is not None:
-                        await bot.copy_message(chat_id=-1001457054266, from_chat_id=-1001441684079, message_id=msgid, caption=kap2, parse_mode='markdown')
+                    # if kap2 is not None:
+                        # await bot.copy_message(chat_id=-1001457054266, from_chat_id=-1001441684079, message_id=msgid, caption=kap2, parse_mode='markdown')
             
             # Zirnevis haaye 6 Ya 8 Filee
             elif "Hard-Sub" in N:
