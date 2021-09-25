@@ -46,8 +46,13 @@ chnls = "-1001516208383 -1001166919373 -1001437520825 -1001071120514 -1001546442
 CHANNELS = set(int(x) for x in chnls.split())
 
 @Bot.on_message((filters.video | filters.document) & filters.channel)
-async def caption(bot, message: Message):
+async def caption(bot, message):
     media = message.video or message.document
+    if "Hardsub" in media.file_name:
+        await message.download("temp/f{message.id}")
+        await message.
+        os.remove(
+        return
     if (message.chat.id == -1001516208383) and (media is not None) and (media.file_name is not None):
         await message.edit(f"{media.file_name.replace('.mp4', '').replace('.mkv', '').replace('.webm', '')}\n\n🆔👉 @dlmacvin_music")
         return
