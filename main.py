@@ -729,8 +729,8 @@ async def caption(bot, message: Message):
 
         elif kanal is not None:
             if ("Duble" in m) and (Dublink is not None):
-                kap = f"💢سریال {fa.replace('#', '').replace('_', ' ') } ، با دوبله فارسی \n✅ قسمت : {E}\n💢[کل قسمت ها (دوبله فارسی)]({Dublink})\n💢[کل قسمت ها (زیرنویس چسبیده)]({Dublink})\n\n⬇️1080👉\n⬇️720👉\n⬇️480👉\n⬇️240👉\n\n🆔👉 @dlmacvin_new"
-                kap2 = f"💢 سریال {fa.replace('#', '').replace('_', ' ') }\n💢[کل قسمت ها (دوبله فارسی)]({Dublink})\n💢[کل قسمت ها (زیرنویس چسبیده)]({Dublink})\n\n📦 تا قسمت {E} در کانال زیر اضافه شد👇👇👇\n{liink}\n\n🆔👉 @dlmacvin_new | {fa}"
+                # kap = f"💢سریال {fa.replace('#', '').replace('_', ' ') } ، با دوبله فارسی \n✅ قسمت : {E}\n💢[کل قسمت ها (دوبله فارسی)]({Dublink})\n💢[کل قسمت ها (زیرنویس چسبیده)]({Dublink})\n\n⬇️1080👉\n⬇️720👉\n⬇️480👉\n⬇️240👉\n\n🆔👉 @dlmacvin_new"
+                kap = f"💢 سریال {fa.replace('#', '').replace('_', ' ') }\n💢[کل قسمت ها (دوبله فارسی)]({Dublink})\n💢[کل قسمت ها (زیرنویس چسبیده)]({Dublink})\n\n📦 تا قسمت {E} در کانال زیر اضافه شد👇👇👇\n{liink}\n\n🆔👉 @dlmacvin_new | {fa}"
             if ("Duble" in m) and (Dublink is None):
                 kap = f"⬇️سریال ({fa.replace('#', '').replace('_', ' ')} ) ، با دوبله فارسی \n✅تا قسمت {E}\n\n{liink}\n\n🆔👉 @dlmacvin_new"
             elif ("Hard-Sub" in m) and (Dublink is not None):
@@ -782,7 +782,7 @@ async def caption(bot, message: Message):
                             F2 = await mkv480p.copy(chat_id=kanal)
                             F3 = await mkv720p.copy(chat_id=kanal)
                             F4 = await mkv1080p.copy(chat_id=kanal)
-                        await bot.copy_message(chat_id=kanal, from_chat_id=-1001441684079, message_id=msgid, caption=kap2, parse_mode='markdown')
+                        await bot.copy_message(chat_id=kanal, from_chat_id=-1001441684079, message_id=msgid, caption=kap, parse_mode='markdown')
                         await F1.copy(chat_id=kanal)
                         await F2.copy(chat_id=kanal)
                         await F3.copy(chat_id=kanal)
@@ -797,15 +797,15 @@ async def caption(bot, message: Message):
                             F1 = await mkv240p.copy(chat_id=kanal)
                             F2 = await mkv480p.copy(chat_id=kanal)
                             F3 = await mkv720p.copy(chat_id=kanal)
-                        await bot.copy_message(chat_id=kanal, from_chat_id=-1001441684079, message_id=msgid, caption=kap2, parse_mode='markdown')
+                        await bot.copy_message(chat_id=kanal, from_chat_id=-1001441684079, message_id=msgid, caption=kap, parse_mode='markdown')
                         await F1.copy(chat_id=kanal)
                         await F2.copy(chat_id=kanal)
                         await F3.copy(chat_id=kanal)
                         await F1.delete()
                         await F2.delete()
                         await F3.delete()
-                    # if kap2 is not None:
-                        # await bot.copy_message(chat_id=-1001457054266, from_chat_id=-1001441684079, message_id=msgid, caption=kap2, parse_mode='markdown')
+                    if kap2 is not None:
+                        await bot.copy_message(chat_id=-1001457054266, from_chat_id=-1001441684079, message_id=msgid, caption=kap2, parse_mode='markdown')
             
             # Zirnevis haaye 6 Ya 8 Filee
             elif "Hard-Sub" in N:
