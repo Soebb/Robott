@@ -50,12 +50,9 @@ async def caption(bot, message):
     media = message.video or message.document
     file = media.file_name.replace(".mkv", "").replace(".mp4", "").replace(".", " ").replace("_", " ").replace("Hardsub", "Hard-Sub").replace("0p", "0P")
     if "Hardsub" in media.file_name:
-        await message.download(f"temp/{file}.{media.file_name.split('.', 1)[1]}")
-        if message.video:
-            await bot.send_video(chat_id=message.chat.id, video=f"temp/{file}.{media.file_name.split('.', 1)[1]}")
-        elif message.document:
-            await bot.send_document(chat_id=message.chat.id, document=f"temp/{file}.{media.file_name.split('.', 1)[1]}")
-        os.remove(f"temp/{file}.{media.file_name.split('.', 1)[1]}")
+        await message.download("temp/vid.mkv")
+        await bot.send_document(chat_id=message.chat.id, document="temp/vid.mkv", file_name=f"{file}.mkv")
+        os.remove("temp/vid.mkv")
         return
     if (message.chat.id == -1001516208383) and (media is not None) and (media.file_name is not None):
         await message.edit(f"{media.file_name.replace('.mp4', '').replace('.mkv', '').replace('.webm', '')}\n\n🆔👉 @dlmacvin_music")
