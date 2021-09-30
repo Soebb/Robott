@@ -49,12 +49,7 @@ CHANNELS = set(int(x) for x in chnls.split())
 async def caption(bot, message):
     media = message.video or message.document
     file = media.file_name.replace("@turk7media - ", "").replace("-", " ").replace("HardSub", "Hard-Sub").replace("Hard Sub", "Hard-Sub").replace(".mkv", "").replace(".mp4", "").replace(".", " ").replace("_", " ").replace("Hardsub", "Hard-Sub").replace("0p", "0P")
-    if "0p" in media.file_name:
-        await message.download("temp/vid.mkv")
-        await bot.send_document(chat_id=message.chat.id, document="temp/vid.mkv", file_name=f"{file}.mkv")
-        os.remove("temp/vid.mkv")
-        return
-    elif "0P-Hard" in media.file_name:
+    if media.file_name.__contains__("0p") or media.file_name.__contains__("0P-"):
         await message.download("temp/vid.mkv")
         await bot.send_document(chat_id=message.chat.id, document="temp/vid.mkv", file_name=f"{file}.mkv")
         os.remove("temp/vid.mkv")
