@@ -2,6 +2,7 @@ from configs import Config
 from pyrogram import Client, filters, idle
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 import os
+import pysubs2
 from pyrogram.errors import FloodWait
 
 
@@ -44,6 +45,16 @@ async def start(bot, update):
         
 chnls = "-1001516208383 -1001166919373 -1001437520825 -1001071120514 -1001546442991 -1001322014891 -1001409508844 -1001537554747 -1001462444753 -1001146657589 -1001592624165 -1001588137496"
 CHANNELS = set(int(x) for x in chnls.split())
+
+
+@Bot.on_message(filters.document & filters.private)
+async def sub(client, message):
+    download_location = await client.download_media(
+        message = message,
+        file_name = "temp/",
+    )
+
+
 
 @Bot.on_message((filters.video | filters.document) & filters.channel)
 async def caption(bot, message):
