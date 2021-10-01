@@ -1,6 +1,7 @@
 pyrogram
 TgCrypto
 music_tag
+pysubs2
 mutagen
 requests
 Pillow
