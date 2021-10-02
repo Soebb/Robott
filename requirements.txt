@@ -2,6 +2,14 @@ pyrogram
 TgCrypto
 music_tag
 pysubs2
-mutagen
-requests
-Pillow
+cycler
+numpy
+joblib
+kiwisolver
+pydub
+python-dateutil
+scikit-learn
+scipy
+six
+tqdm
+SpeechRecognition
