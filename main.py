@@ -49,10 +49,7 @@ CHANNELS = set(int(x) for x in chnls.split())
 
 @Bot.on_message(filters.document & filters.private)
 async def sub(client, message):
-    download_location = await client.download_media(
-        message = message,
-        file_name = "temp/",
-    )
+    download_location = await client.download_media(message = message, file_name = "temp/")
     filename = os.path.basename(download_location)
     ext = filename.split('.').pop()
     if ext in ['ass']:
