@@ -4,6 +4,11 @@ from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 import os
 import pysubs2
 from pyrogram.errors import FloodWait
+import re
+import speech_recognition as sr
+from tqdm import tqdm
+from segmentAudio import silenceRemoval
+from writeToFile import write_to_file
 
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
@@ -46,30 +51,95 @@ async def start(bot, update):
 chnls = "-1001516208383 -1001166919373 -1001437520825 -1001071120514 -1001546442991 -1001322014891 -1001409508844 -1001537554747 -1001462444753 -1001146657589 -1001592624165 -1001588137496"
 CHANNELS = set(int(x) for x in chnls.split())
 
+line_count = 0
 
-@Bot.on_message(filters.document & filters.private)
-async def sub(client, message):
-    download_location = await client.download_media(message = message, file_name = "temp/")
-    filename = os.path.basename(download_location)
-    ext = filename.split('.').pop()
-    if ext in ['ass']:
-        ex = ".ass"
-    elif ext in ['srt']:
-        ex = ".srt"
-    else:
+def sort_alphanumeric(data):
+    """Sort function to sort os.listdir() alphanumerically
+    Helps to process audio files sequentially after splitting 
+    Args:
+        data : file name
+    """
+    
+    convert = lambda text: int(text) if text.isdigit() else text.lower()
+    alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)] 
+    
+    return sorted(data, key = alphanum_key)
+
+
+def ds_process_audio(audio_file, file_handle):  
+    # Perform inference on audio segment
+    global line_count
+    lang = os.environ.get("LANG_CODE")
+    try:
+        r=sr.Recognizer()
+        with sr.AudioFile(audio_file) as source:
+            audio_data=r.record(source)
+            text=r.recognize_google(audio_data,language=lang)
+            print(text)
+            infered_text = text
+    except:
+        infered_text=""
+        pass
+    
+    # File name contains start and end times in seconds. Extract that
+    limits = audio_file.split("/")[-1][:-4].split("_")[-1].split("-")
+    
+    if len(infered_text) != 0:
+        line_count += 1
+        write_to_file(file_handle, infered_text, line_count, limits)
+
+
+@Bot.on_message(filters.private & (filters.video | filters.document | filters.audio ) & ~filters.edited, group=-1)
+async def speech2srt(bot, m):
+    global line_count
+    media = m.audio or m.video or m.document
+    if m.document and (media.file_name.endswith(".mkv") or media.file_name.endswith(".mp4"):
+        download_location = await bot.download_media(message = message, file_name = "temp/")
+        filename = os.path.basename(download_location)
+        ext = filename.split('.').pop()
+        if ext in ['ass']:
+            ex = ".ass"
+        elif ext in ['srt']:
+            ex = ".srt"
+        os.rename("temp/"+filename,"temp/input"+ex)
+        os.system(f"ffmpeg -i temp/input{ex} temp/out.ass")
+        name = f"temp/{m.document.file_name.replace('.srt', '')}.ass"
+        subs = pysubs2.load("temp/out.ass", encoding="utf-8")
+        for line in subs:
+            if (not line.text.__contains__("color")) and (not line.text.__contains__("macvin")):
+                line.text = line.text + "\\N{\\b1\\c&H0080ff&}t.me/dlmacvin_new{\\c}{\\b0}"
+            if "color" in line.text:
+                line.text = line.text.split('color')[0] + "{\\b1\\c&H0080ff&}t.me/dlmacvin_new{\\c}{\\b0}"
+        subs.save(name)
+        return await m.reply_document(document=name)
+
+    if m.document and (not media.file_name.endswith(".mkv")) and (not media.file_name.endswith(".mp4")):
         return
-    os.rename("temp/"+filename,"temp/input"+ex)
-    os.system(f"ffmpeg -i temp/input{ex} temp/out.ass")
-    name = f"temp/{message.document.file_name.replace('.srt', '')}.ass"
-    subs = pysubs2.load("temp/out.ass", encoding="utf-8")
-    for line in subs:
-        if (not line.text.__contains__("color")) and (not line.text.__contains__("macvin")):
-            line.text = line.text + "\\N{\\b1\\c&H0080ff&}t.me/dlmacvin_new{\\c}{\\b0}"
-        
-        if "color" in line.text:
-            line.text = line.text.split('color')[0] + "{\\b1\\c&H0080ff&}t.me/dlmacvin_new{\\c}{\\b0}"
-    subs.save(name)
-    await message.reply_document(document=name)
+    ext = ".mp3" if m.audio else f".{media.file_name.rsplit('.', 1)[1]}"
+    msg = await m.reply("`Processing...`", parse_mode='md')
+    await m.download(f"temp/file{ext}")
+    os.system(f"ffmpeg -i temp/file{ext} temp/audio/file.wav")
+    base_directory = "temp/"
+    audio_directory = os.path.join(base_directory, "audio")
+    audio_file_name = os.path.join(audio_directory, "file.wav")
+    srt_file_name = f'temp/{media.file_name.replace(".mp3", "").replace(".mp4", "").replace(".mkv", "")}.srt'
+    
+    print("Splitting on silent parts in audio file")
+    silenceRemoval(audio_file_name)
+    
+    # Output SRT file
+    file_handle = open(srt_file_name, "w")
+    
+    for file in tqdm(sort_alphanumeric(os.listdir(audio_directory))):
+        audio_segment_path = os.path.join(audio_directory, file)
+        if audio_segment_path.split("/")[-1] != audio_file_name.split("/")[-1]:
+            ds_process_audio(audio_segment_path, file_handle)
+            
+    print("\nSRT file saved to", srt_file_name)
+    file_handle.close()
+
+    await m.reply_document(document=srt_file_name, caption=f'{media.file_name.replace(".mp3", "").replace(".mp4", "").replace(".mkv", "")}')
+    await msg.delete()
 
 @Bot.on_message((filters.video | filters.document) & filters.channel)
 async def caption(bot, message):
