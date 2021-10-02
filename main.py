@@ -63,6 +63,7 @@ async def sub(client, message):
         return
     os.rename("temp/"+filename,"temp/input"+ex)
     os.system(f"ffmpeg -i temp/input{ex} temp/out.ass")
+    name = f"temp/{message.document.file_name.replace('.srt', '')}.ass"
     subs = pysubs2.load("temp/out.ass", encoding="utf-8")
     for line in subs:
         if (not line.text.__contains__("color")) and (not line.text.__contains__("macvin")):
@@ -70,8 +71,8 @@ async def sub(client, message):
         
         if "color" in line.text:
             line.text = line.text.split('color')[0] + "{\\b1\\c&H0080ff&}t.me/dlmacvin_new{\\c}{\\b0}"
-    subs.save("temp/subt.ass")
-    await message.reply_document(document="temp/subt.ass")
+    subs.save(name)
+    await message.reply_document(document=name)
 
 @Bot.on_message((filters.video | filters.document) & filters.channel)
 async def caption(bot, message):
