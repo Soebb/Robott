@@ -69,12 +69,11 @@ def sort_alphanumeric(data):
 def ds_process_audio(audio_file, file_handle):  
     # Perform inference on audio segment
     global line_count
-    lang = os.environ.get("LANG_CODE")
     try:
         r=sr.Recognizer()
         with sr.AudioFile(audio_file) as source:
             audio_data=r.record(source)
-            text=r.recognize_google(audio_data,language=lang)
+            text=r.recognize_google(audio_data,language="tr-TR")
             print(text)
             infered_text = text
     except:
