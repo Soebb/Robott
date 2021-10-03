@@ -29,12 +29,6 @@ START_BTN = InlineKeyboardMarkup(
         InlineKeyboardButton('Source Code', url='https://github.com/samadii/ChannelForwardTagRemover'),
         ]]
     )
-# User Client for Searching in Channel.
-User = Client(
-    session_name=Config.USER_SESSION_STRING,
-    api_id=Config.API_ID,
-    api_hash=Config.API_HASH
-)
 
 
 @Bot.on_message(filters.command(["start"]))
@@ -718,12 +712,4 @@ async def caption(bot, message):
                 print(error)
                    
     
-# Start Clients
-Bot.start()
-User.start()
-# Loop Clients till Disconnects
-idle()
-# After Disconnects,
-# Stop Clients
-Bot.stop()
-User.stop()
+Bot.run()
