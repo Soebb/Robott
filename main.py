@@ -87,7 +87,7 @@ async def speech2srt(bot, m):
     global line_count
     media = m.audio or m.video or m.document
     if m.document and (media.file_name.endswith(".srt") or media.file_name.endswith(".ass")):
-        download_location = await bot.download_media(message = message, file_name = "temp/")
+        download_location = await bot.download_media(message = m, file_name = "temp/")
         filename = os.path.basename(download_location)
         ext = filename.split('.').pop()
         if ext in ['ass']:
