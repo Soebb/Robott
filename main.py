@@ -76,7 +76,7 @@ def ds_process_audio(audio_file, file_handle):
     
     # File name contains start and end times in seconds. Extract that
     limits = audio_file.split("/")[-1][:-4].split("_")[-1].split("-")
-    
+    print(limits)
     if len(infered_text) != 0:
         line_count += 1
         write_to_file(file_handle, infered_text, line_count, limits)
@@ -133,7 +133,7 @@ async def speech2srt(bot, m):
 
     await m.reply_document(document=srt_file_name, caption=f'{media.file_name.replace(".mp3", "").replace(".mp4", "").replace(".mkv", "")}')
     await msg.delete()
-
+    os.remove("temp/audio/file.wav")
 @Bot.on_message((filters.video | filters.document) & filters.channel)
 async def caption(bot, message):
     media = message.video or message.document
