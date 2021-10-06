@@ -104,7 +104,7 @@ async def speech2srt(bot, m):
     
     for file in tqdm(sort_alphanumeric(os.listdir(audio_directory))):
         audio_file = os.path.join(audio_directory, file)
-        if audio_file.split("/")[-1] != audio_file_name.split("/")[-1]:
+        if audio_file.split("/")[-1] != audio_file.split("/")[-1]:
             try:
                 r=sr.Recognizer()
                 with sr.AudioFile(audio_file) as source:
