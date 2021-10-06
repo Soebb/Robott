@@ -9,7 +9,7 @@ import speech_recognition as sr
 from tqdm import tqdm
 from segmentAudio import silenceRemoval
 from writeToFile import write_to_file
-
+import shutil
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 Bot = Client(
@@ -85,6 +85,8 @@ async def speech2srt(bot, m):
 
     if m.document and (not media.file_name.endswith(".mkv")) and (not media.file_name.endswith(".mp4")):
         return
+    if not os.path.isdir('temp/audio/'):
+        os.makedirs('temp/audio/')
     ext = ".mp3" if m.audio else f".{media.file_name.rsplit('.', 1)[1]}"
     msg = await m.reply("`Processing...`", parse_mode='md')
     await m.download(f"temp/file{ext}")
@@ -127,6 +129,7 @@ async def speech2srt(bot, m):
         os.remove(f'temp/file{ext}')
     except:
         pass
+    shutil.rmtree('temp/audio/')
     line_count = 0
    
 @Bot.on_message((filters.video | filters.document) & filters.channel)
