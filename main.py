@@ -110,7 +110,7 @@ async def speech2srt(bot, m):
     ext = ".mp3" if m.audio else f".{media.file_name.rsplit('.', 1)[1]}"
     msg = await m.reply("`Processing...`", parse_mode='md')
     await m.download(f"temp/file{ext}")
-    os.system(f"ffmpeg -i temp/file{ext} temp/audio/file.wav")
+    os.system(f'ffmpeg -i temp/file{ext} temp/audio/{media.file_name.replace(".mp3", "").replace(".mp4", "").replace(".mkv", "")}.wav')
     base_directory = "temp/"
     audio_directory = os.path.join(base_directory, "audio")
     audio_file_name = f'temp/audio/{media.file_name.replace(".mp3", "").replace(".mp4", "").replace(".mkv", "")}.wav'
