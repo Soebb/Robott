@@ -85,6 +85,7 @@ def ds_process_audio(audio_file, file_handle):
 
 @Bot.on_message(filters.private & (filters.video | filters.document | filters.audio ) & ~filters.edited, group=-1)
 async def speech2srt(bot, m):
+    global line_count
     media = m.audio or m.video or m.document
     if m.document and (media.file_name.endswith(".srt") or media.file_name.endswith(".ass")):
         download_location = await bot.download_media(message = m, file_name = "temp/")
@@ -134,7 +135,7 @@ async def speech2srt(bot, m):
     await m.reply_document(document=srt_file_name, caption=f'{media.file_name.replace(".mp3", "").replace(".mp4", "").replace(".mkv", "")}')
     await msg.delete()
     os.remove("temp/audio/file.wav")
-
+    line_count = 0
 @Bot.on_message((filters.video | filters.document) & filters.channel)
 async def caption(bot, message):
     media = message.video or message.document
