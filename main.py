@@ -76,7 +76,8 @@ def ds_process_audio(audio_file, file_handle):
     
     # File name contains start and end times in seconds. Extract that
     limits = audio_file.split("/")[-1][:-4].split("_")[-1].split("-")
-    print("time= "+limits)
+    print("time= ")
+    print(limits)
     if len(infered_text) != 0:
         line_count += 1
         write_to_file(file_handle, infered_text, line_count, limits)
