@@ -133,6 +133,10 @@ async def speech2srt(bot, m):
     await m.reply_document(document=srt_file_name, caption=f'{media.file_name.replace(".mp3", "").replace(".mp4", "").replace(".mkv", "")}')
     await msg.delete()
     os.remove(f'temp/audio/a{m.message_id}.wav')
+    try:
+        os.remove(f'temp/file{ext}')
+    except:
+        pass
     line_count = 0
    
 @Bot.on_message((filters.video | filters.document) & filters.channel)
