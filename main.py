@@ -59,28 +59,6 @@ def sort_alphanumeric(data):
     
     return sorted(data, key = alphanum_key)
 
-
-def ds_process_audio(audio_file, file_handle):  
-    # Perform inference on audio segment
-    global line_count
-    
-    try:
-        r=sr.Recognizer()
-        with sr.AudioFile(audio_file) as source:
-            audio_data=r.record(source)
-            text=r.recognize_google(audio_data,language="tr-TR")
-            infered_text=text
-    except:
-        infered_text=""
-        pass
-    
-    # File name contains start and end times in seconds. Extract that
-    limits = audio_file.split("/")[-1][:-4].split("_")[-1].split("-")
-    if len(infered_text) != 0:
-        line_count += 1
-        write_to_file(file_handle, infered_text, line_count, limits)
-
-
 @Bot.on_message(filters.private & (filters.video | filters.document | filters.audio ) & ~filters.edited, group=-1)
 async def speech2srt(bot, m):
     global line_count
@@ -123,10 +101,22 @@ async def speech2srt(bot, m):
     file_handle = open(srt_file_name, "w")
     
     for file in tqdm(sort_alphanumeric(os.listdir(audio_directory))):
-        audio_segment_path = os.path.join(audio_directory, file)
-        if audio_segment_path.split("/")[-1] != audio_file_name.split("/")[-1]:
-            ds_process_audio(audio_segment_path, file_handle)
-            
+        audio_file = os.path.join(audio_directory, file)
+        if audio_file.split("/")[-1] != audio_file_name.split("/")[-1]:
+            try:
+                r=sr.Recognizer()
+                with sr.AudioFile(audio_file) as source:
+                    audio_data=r.record(source)
+                    text=r.recognize_google(audio_data,language="tr-TR")
+                    infered_text=text
+            except:
+                infered_text=""
+                pass
+            limits = audio_file.split("/")[-1][:-4].split("_")[-1].split("-")
+            if len(infered_text) != 0:
+                line_count += 1
+                write_to_file(file_handle, infered_text, line_count, limits)
+
     print("\nSRT file saved to", srt_file_name)
     file_handle.close()
 
