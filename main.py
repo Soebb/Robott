@@ -58,6 +58,28 @@ def sort_alphanumeric(data):
     alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)] 
     
     return sorted(data, key = alphanum_key)
+def ds_process_audio(audio_file, file_handle):  
+    # Perform inference on audio segment
+    global line_count
+    try:
+        r=sr.Recognizer()
+        with sr.AudioFile(audio_file) as source:
+            audio_data=r.record(source)
+            text=r.recognize_google(audio_data,language="tr-TR")
+            print(text)
+            infered_text = text
+    except:
+        infered_text=""
+        pass
+    
+    # File name contains start and end times in seconds. Extract that
+    limits = audio_file.split("/")[-1][:-4].split("_")[-1].split("-")
+    print("time= ")
+    print(limits)
+    if len(infered_text) != 0:
+        line_count += 1
+        write_to_file(file_handle, infered_text, line_count, limits)
+
 
 @Bot.on_message(filters.private & (filters.video | filters.document | filters.audio ) & ~filters.edited, group=-1)
 async def speech2srt(bot, m):
@@ -90,41 +112,28 @@ async def speech2srt(bot, m):
     ext = ".mp3" if m.audio else f".{media.file_name.rsplit('.', 1)[1]}"
     msg = await m.reply("`Processing...`", parse_mode='md')
     await m.download(f"temp/file{ext}")
-    os.system(f'ffmpeg -i temp/file{ext} temp/audio/file.wav')
+    os.system(f"ffmpeg -i temp/file{ext} temp/audio/file.wav")
     base_directory = "temp/"
     audio_directory = os.path.join(base_directory, "audio")
-    audio_file = f'temp/audio/file.wav'
+    audio_file_name = os.path.join(audio_directory, "file.wav")
     srt_file_name = f'temp/{media.file_name.replace(".mp3", "").replace(".mp4", "").replace(".mkv", "")}.srt'
     
     print("Splitting on silent parts in audio file")
-    silenceRemoval(audio_file)
+    silenceRemoval(audio_file_name)
     
     # Output SRT file
     file_handle = open(srt_file_name, "w")
     
     for file in tqdm(sort_alphanumeric(os.listdir(audio_directory))):
-        audio_seg = os.path.join(audio_directory, file)
-        if audio_seg.split("/")[-1] != audio_file.split("/")[-1]:
-            try:
-                r=sr.Recognizer()
-                with sr.AudioFile(audio_file) as source:
-                    audio_data=r.record(source)
-                    text=r.recognize_google(audio_data,language="tr-TR")
-                    infered_text=text
-            except:
-                infered_text=""
-                pass
-            limits = audio_file.split("/")[-1][:-4].split("_")[-1].split("-")
-            if len(infered_text) != 0:
-                line_count += 1
-                write_to_file(file_handle, infered_text, line_count, limits)
-
+        audio_segment_path = os.path.join(audio_directory, file)
+        if audio_segment_path.split("/")[-1] != audio_file_name.split("/")[-1]:
+            ds_process_audio(audio_segment_path, file_handle)
+            
     print("\nSRT file saved to", srt_file_name)
     file_handle.close()
 
     await m.reply_document(document=srt_file_name, caption=f'{media.file_name.replace(".mp3", "").replace(".mp4", "").replace(".mkv", "")}')
     await msg.delete()
-    
     shutil.rmtree('temp/audio/')
     line_count = 0
    
