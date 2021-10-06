@@ -100,22 +100,22 @@ async def speech2srt(bot, m):
     # Output SRT file
     file_handle = open(srt_file_name, "w")
     
-    #for file in tqdm(sort_alphanumeric(os.listdir(audio_directory))):
-    #    audio_file = os.path.join(audio_directory, file)
-    #    if audio_file.split("/")[-1] != audio_file_name.split("/")[-1]:
-    try:
-        r=sr.Recognizer()
-        with sr.AudioFile(audio_file) as source:
-            audio_data=r.record(source)
-            text=r.recognize_google(audio_data,language="tr-TR")
-            infered_text=text
-    except:
-        infered_text=""
-        pass
-    limits = audio_file.split("/")[-1][:-4].split("_")[-1].split("-")
-    if len(infered_text) != 0:
-        line_count += 1
-        write_to_file(file_handle, infered_text, line_count, limits)
+    for file in tqdm(sort_alphanumeric(os.listdir(audio_directory))):
+        audio_file = os.path.join(audio_directory, file)
+        if audio_file.split("/")[-1] != audio_file_name.split("/")[-1]:
+            try:
+                r=sr.Recognizer()
+                with sr.AudioFile(audio_file) as source:
+                    audio_data=r.record(source)
+                    text=r.recognize_google(audio_data,language="tr-TR")
+                    infered_text=text
+            except:
+                infered_text=""
+                pass
+            limits = audio_file.split("/")[-1][:-4].split("_")[-1].split("-")
+            if len(infered_text) != 0:
+                line_count += 1
+                write_to_file(file_handle, infered_text, line_count, limits)
 
     print("\nSRT file saved to", srt_file_name)
     file_handle.close()
