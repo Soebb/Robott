@@ -46,7 +46,7 @@ chnls = "-1001516208383 -1001166919373 -1001437520825 -1001071120514 -1001546442
 CHANNELS = set(int(x) for x in chnls.split())
 
 line_count = 0
-#infered_text = None
+infered_text = ""
 
 def sort_alphanumeric(data):
     """Sort function to sort os.listdir() alphanumerically
@@ -64,17 +64,19 @@ def sort_alphanumeric(data):
 def ds_process_audio(audio_file, file_handle):  
     # Perform inference on audio segment
     global line_count
-    #global infered_text
-    try:
-        r=sr.Recognizer()
-        with sr.AudioFile(audio_file) as source:
-            audio_data=r.record(source)
-            infered_text=r.recognize_google(audio_data,language="tr-TR")
-            #infered_text = text
-    except:
-        infered_text=""
-        pass
-    
+    global infered_text
+    if infered_text != "none":
+        try:
+            r=sr.Recognizer()
+            with sr.AudioFile(audio_file) as source:
+                audio_data=r.record(source)
+                infered_text=r.recognize_google(audio_data,language="tr-TR")
+                #infered_text = text
+        except:
+            infered_text=""
+            pass
+    else:
+        infered_text = ""
     # File name contains start and end times in seconds. Extract that
     limits = audio_file.split("/")[-1][:-4].split("_")[-1].split("-")
     print("time= ")
@@ -87,7 +89,8 @@ def ds_process_audio(audio_file, file_handle):
 @Bot.on_message(filters.private & (filters.video | filters.document | filters.audio ) & ~filters.edited, group=-1)
 async def speech2srt(bot, m):
     global line_count
-    #global infered_text
+    global infered_text
+    infered_text = "a"
     media = m.audio or m.video or m.document
     if m.document and (media.file_name.endswith(".srt") or media.file_name.endswith(".ass")):
         download_location = await bot.download_media(message = m, file_name = "temp/")
@@ -138,7 +141,7 @@ async def speech2srt(bot, m):
     await msg.delete()
     os.remove("temp/audio/file.wav")
     line_count = 0
-    #infered_text = None
+    infered_text = "none"
 @Bot.on_message((filters.video | filters.document) & filters.channel)
 async def caption(bot, message):
     media = message.video or message.document
