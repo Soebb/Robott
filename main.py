@@ -93,7 +93,7 @@ async def speech2srt(bot, m):
     os.system(f'ffmpeg -i temp/file{ext} temp/audio/a{m.message_id}.wav')
     base_directory = "temp/"
     audio_directory = os.path.join(base_directory, "audio")
-    audio_file = f'temp/audio/a{m.message_id}.wav'
+    audio_file = f'temp/audio/file.wav'
     srt_file_name = f'temp/{media.file_name.replace(".mp3", "").replace(".mp4", "").replace(".mkv", "")}.srt'
     
     print("Splitting on silent parts in audio file")
@@ -124,11 +124,7 @@ async def speech2srt(bot, m):
 
     await m.reply_document(document=srt_file_name, caption=f'{media.file_name.replace(".mp3", "").replace(".mp4", "").replace(".mkv", "")}')
     await msg.delete()
-    os.remove(f'temp/audio/a{m.message_id}.wav')
-    try:
-        os.remove(f'temp/file{ext}')
-    except:
-        pass
+    
     shutil.rmtree('temp/audio/')
     line_count = 0
    
