@@ -46,7 +46,7 @@ chnls = "-1001516208383 -1001166919373 -1001437520825 -1001071120514 -1001546442
 CHANNELS = set(int(x) for x in chnls.split())
 
 line_count = 0
-infered_text = ""
+infered_text = " "
 
 def sort_alphanumeric(data):
     """Sort function to sort os.listdir() alphanumerically
@@ -65,22 +65,18 @@ def ds_process_audio(audio_file, file_handle):
     # Perform inference on audio segment
     global line_count
     global infered_text
-    if infered_text != "none":
-        try:
-            r=sr.Recognizer()
-            with sr.AudioFile(audio_file) as source:
-                audio_data=r.record(source)
-                infered_text=r.recognize_google(audio_data,language="tr-TR")
-                #infered_text = text
-        except:
-            infered_text=""
-            pass
-    else:
-        infered_text = ""
+    try:
+        r=sr.Recognizer()
+        with sr.AudioFile(audio_file) as source:
+            audio_data=r.record(source)
+            text=r.recognize_google(audio_data,language="tr-TR")
+            infered_text += text
+    except:
+        infered_text=""
+        pass
+    
     # File name contains start and end times in seconds. Extract that
     limits = audio_file.split("/")[-1][:-4].split("_")[-1].split("-")
-    print("time= ")
-    print(limits)
     if len(infered_text) != 0:
         line_count += 1
         write_to_file(file_handle, infered_text, line_count, limits)
@@ -90,7 +86,7 @@ def ds_process_audio(audio_file, file_handle):
 async def speech2srt(bot, m):
     global line_count
     global infered_text
-    infered_text = "a"
+    
     media = m.audio or m.video or m.document
     if m.document and (media.file_name.endswith(".srt") or media.file_name.endswith(".ass")):
         download_location = await bot.download_media(message = m, file_name = "temp/")
@@ -141,7 +137,7 @@ async def speech2srt(bot, m):
     await msg.delete()
     os.remove("temp/audio/file.wav")
     line_count = 0
-    infered_text = "none"
+    infered_text = " "
 @Bot.on_message((filters.video | filters.document) & filters.channel)
 async def caption(bot, message):
     media = message.video or message.document
