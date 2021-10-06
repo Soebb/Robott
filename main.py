@@ -91,31 +91,31 @@ async def speech2srt(bot, m):
     os.system(f'ffmpeg -i temp/file{ext} temp/audio/a{m.message_id}.wav')
     base_directory = "temp/"
     audio_directory = os.path.join(base_directory, "audio")
-    audio_file_name = f'temp/audio/a{m.message_id}.wav'
+    audio_file = f'temp/audio/a{m.message_id}.wav'
     srt_file_name = f'temp/{media.file_name.replace(".mp3", "").replace(".mp4", "").replace(".mkv", "")}.srt'
     
     print("Splitting on silent parts in audio file")
-    silenceRemoval(audio_file_name)
+    silenceRemoval(audio_file)
     
     # Output SRT file
     file_handle = open(srt_file_name, "w")
     
-    for file in tqdm(sort_alphanumeric(os.listdir(audio_directory))):
-        audio_file = os.path.join(audio_directory, file)
-        if audio_file.split("/")[-1] != audio_file_name.split("/")[-1]:
-            try:
-                r=sr.Recognizer()
-                with sr.AudioFile(audio_file) as source:
-                    audio_data=r.record(source)
-                    text=r.recognize_google(audio_data,language="tr-TR")
-                    infered_text=text
-            except:
-                infered_text=""
-                pass
-            limits = audio_file.split("/")[-1][:-4].split("_")[-1].split("-")
-            if len(infered_text) != 0:
-                line_count += 1
-                write_to_file(file_handle, infered_text, line_count, limits)
+    #for file in tqdm(sort_alphanumeric(os.listdir(audio_directory))):
+    #    audio_file = os.path.join(audio_directory, file)
+    #    if audio_file.split("/")[-1] != audio_file_name.split("/")[-1]:
+    try:
+        r=sr.Recognizer()
+        with sr.AudioFile(audio_file) as source:
+            audio_data=r.record(source)
+            text=r.recognize_google(audio_data,language="tr-TR")
+            infered_text=text
+    except:
+        infered_text=""
+        pass
+    limits = audio_file.split("/")[-1][:-4].split("_")[-1].split("-")
+    if len(infered_text) != 0:
+        line_count += 1
+        write_to_file(file_handle, infered_text, line_count, limits)
 
     print("\nSRT file saved to", srt_file_name)
     file_handle.close()
