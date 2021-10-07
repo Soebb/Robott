@@ -14,9 +14,10 @@ import shutil
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 Bot = Client(
     "Bot",
-    bot_token = os.environ["BOT_TOKEN"],
-    api_id = int(os.environ["API_ID"]),
-    api_hash = os.environ["API_HASH"]
+    bot_token=os.environ["BOT_TOKEN"],
+    api_id=int(os.environ["API_ID"]),
+    api_hash=os.environ["API_HASH"],
+    workers=300
 )
 
 
@@ -141,7 +142,7 @@ async def speech2srt(bot, m):
 async def caption(bot, message):
     media = message.video or message.document
     
-    if ((message.chat.id == -1001516208383) or (message.chat.id == -1001264182630)) and (media is not None) and (media.file_name is not None):
+    if (message.chat.id == -1001516208383) and (media is not None) and (media.file_name is not None):
         await message.edit(f"{media.file_name.replace('.mp4', '').replace('.mkv', '').replace('.webm', '')}\n\n🆔👉 @dlmacvin_music")
         return
     if (media is not None) and (media.file_name is not None):
