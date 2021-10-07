@@ -500,6 +500,12 @@ async def caption(bot, message):
         if "Lise Devriyesi" in m:
             fa += "#گشت_مدرسه"
             X = "Lise Devriyesi"
+        if "Kurulus Osman" in m:
+            fa += "#قیام_عثمان"
+            X = "Kurulus Osman"
+        if "Kanunsuz Topraklar" in m:
+            fa += "#سرزمین_های_بی_قانون"
+            X = "Kanunsuz Topraklar"
 
 			
         if Z.__contains__("Fragman") or m.__contains__("Bolum") or m.__contains__("bolum") or Z.__contains__("fragman"):
