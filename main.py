@@ -140,17 +140,12 @@ async def speech2srt(bot, m):
 @Bot.on_message((filters.video | filters.document) & filters.channel)
 async def caption(bot, message):
     media = message.video or message.document
-    file = media.file_name.replace("@turk7media - ", "").replace("-", " ").replace("HardSub", "Hard-Sub").replace("Hard Sub", "Hard-Sub").replace(".mkv", "").replace(".mp4", "").replace(".", " ").replace("_", " ").replace("Hardsub", "Hard-Sub").replace("0p", "0P")
-    if media.file_name.__contains__("0p") or media.file_name.__contains__("0P-"):
-        await message.download("temp/vid.mkv")
-        await bot.send_document(chat_id=message.chat.id, document="temp/vid.mkv", file_name=f"{file}.mkv")
-        os.remove("temp/vid.mkv")
-        return
+    
     if (message.chat.id == -1001516208383) and (media is not None) and (media.file_name is not None):
         await message.edit(f"{media.file_name.replace('.mp4', '').replace('.mkv', '').replace('.webm', '')}\n\n🆔👉 @dlmacvin_music")
         return
     if (media is not None) and (media.file_name is not None):
-        m = media.file_name.replace("Fragmanı", "").replace("mp4", "").replace(".", " ").replace("_", " ").replace("Fragmanlarım", "").replace("ı", "i").replace("İ", "I").replace("ö", "o").replace("Ö", "O").replace("Ü", "U").replace("ü", "u").replace("ë", "e").replace("@dlmacvin2 -", "").replace("@dlmacvin -", "").replace("Ë", "E").replace("Ä", "A").replace("ç", "c").replace("Ç", "C").replace("ş", "s").replace("Ş", "S").replace("ğ", "g").replace("Ğ", "G").replace("ä", "a")
+        m = media.file_name.replace("@turk7media - ", "").replace("-", " ").replace("HardSub", "Hard-Sub").replace("Hard Sub", "Hard-Sub").replace(".mkv", "").replace(".", " ").replace("_", " ").replace("Hardsub", "Hard-Sub").replace("0p", "0P").replace("Fragmanı", "").replace("mp4", "").replace("Fragmanlarım", "").replace("ı", "i").replace("İ", "I").replace("ö", "o").replace("Ö", "O").replace("Ü", "U").replace("ü", "u").replace("ë", "e").replace("@dlmacvin2 -", "").replace("@dlmacvin -", "").replace("Ë", "E").replace("Ä", "A").replace("ç", "c").replace("Ç", "C").replace("ş", "s").replace("Ş", "S").replace("ğ", "g").replace("Ğ", "G").replace("ä", "a")
         D = m.replace("720P", "").replace("E20", "").replace("E120", "").replace("E220", "").replace("E320", "").replace("E420", "")
         N = m
         Z = media.file_name
@@ -617,7 +612,7 @@ async def caption(bot, message):
                 E = '9' + f"{T}"
                 n = N.split("E9")[0]
             H = fa.replace("_", " ").replace("#", "")
-            if not "Hard-Sub" in N:
+            if not "Hard-Sub" in m:
                 Fucc += f"🔺{H} قسمت {E} \n🔸 دوبله فارسی"
                 Fuc = f"{Fucc}{q.replace('  ', ' ')} \n🆔👉 @dlmacvin_new | {fa}"
 
