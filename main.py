@@ -137,7 +137,7 @@ async def speech2srt(bot, m):
     shutil.rmtree('temp/audio/')
     line_count = 0
    
-@Bot.on_message((filters.video | filters.document) & filters.channel)
+@Bot.on_message((filters.video | filters.document) & filters.channel & ~filters.edited)
 async def caption(bot, message):
     media = message.video or message.document
     
@@ -464,9 +464,30 @@ async def caption(bot, message):
         if "Ya Istiklal Ya Olum" in m:
             fa += "#یا_استقلال_یا_مرگ"
             X = "Ya Istiklal Ya Olum"
-        if "Yalanci" in m:
+        if ("Yalanci" in m) and not m.__contains__("Yalancilar ve Mumlari"):
             fa += "#دروغگو"
             X = "Yalanci"
+        if "El Kizi" in m:
+            fa += "#دختر_مردم"
+            X = "El Kizi"
+        if "Masumlar Apartmani" in m:
+            fa += "#آپارتمان_بیگناهان"
+            X = "Masumlar Apartmani"
+        if "Yalancilar ve Mumlari" in m:
+            fa += "#دروغگو_ها_و_شمع_هایشان"
+            X = "Yalancilar ve Mumlari"
+        if "Lise Devriyesi" in m:
+            fa += "#گشت_مدرسه"
+            X = "Lise Devriyesi"
+        if "Evlilik Hakkinda Her Sey" in m:
+            fa += "#همه_چیز_درباره_ازدواج"
+            X = "Evlilik Hakkinda Her Sey"
+        if "Son Yaz" in m:
+            fa += "#آخرین_تابستان"
+            X = "Son Yaz"
+        if "Barbaroslar Akdenizin Kilici" in m:
+            fa += "#بارباروس_ها_شمشیر_دریای_مدیترانه"
+            X = "Barbaroslar Akdenizin Kilici"
         if "Bir Ask Hikayesi" in m:
             fa += "#حکایت_یک_عشق"
             X = "Bir Ask Hikayesi"
