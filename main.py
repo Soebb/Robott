@@ -565,7 +565,7 @@ async def caption(bot, message):
                 date += "دو شنبه از رسانه اینترنتی دی ال مکوین"
             if "Yargi" in m:
                 date += "دو شنبه از رسانه اینترنتی دی ال مکوین"
-            if "Yalanci" in m:
+            if ("Yalanci" in m) and not m.__contains__("Yalancilar ve Mumlari"):
                 date += "شنبه از رسانه اینترنتی دی ال مکوین"
             if "Ada Masali" in m:
                 date += "چهار شنبه ساعت 2:30 بامداد از رسانه اینترنتی دی ال مکوین"
