@@ -11,12 +11,20 @@ from segmentAudio import silenceRemoval
 from writeToFile import write_to_file
 import shutil
 
-BOT_TOKEN = os.environ["BOT_TOKEN"]
+if 'BOT_TOKEN' in os.environ:
+    BOT_TOKEN = os.environ.get('BOT_TOKEN')
+    API_ID = os.environ.get('API_ID')
+    API_HASH = os.environ.get('API_HASH')
+else:
+    BOT_TOKEN = ' '
+    API_ID = ' '
+    API_HASH = ' '
+
 Bot = Client(
     "Bot",
-    bot_token=os.environ["BOT_TOKEN"],
-    api_id=int(os.environ["API_ID"]),
-    api_hash=os.environ["API_HASH"],
+    bot_token=BOT_TOKEN,
+    api_id=API_ID,
+    api_hash=API_HASH,
     workers=300
 )
 
