@@ -1,15 +1,9 @@
 pyrogram
 TgCrypto
-music_tag
 pysubs2
-cycler
 numpy
-joblib
-kiwisolver
 pydub
-python-dateutil
 scikit-learn
 scipy
-six
 tqdm
 SpeechRecognition
