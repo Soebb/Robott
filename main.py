@@ -696,7 +696,10 @@ async def caption(bot, message):
                 print(Fuc)
                 msg = await message.edit(Fuc)
             else:
-                Fucc += f"♨️ سریال{fa} ( {n}) بازیرنویس چسبیده\n👌قسمت : {E.replace('Hard-Sub', '')}"
+                if "O Ses Turkiye" in m:
+                    Fucc += f"♨️ مسابقه{fa} ( {n}) بازیرنویس چسبیده\n👌قسمت : {E.replace('Hard-Sub', '')}"
+                else:
+                    Fucc += f"♨️ سریال{fa} ( {n}) بازیرنویس چسبیده\n👌قسمت : {E.replace('Hard-Sub', '')}"
                 Fuc = f"{Fucc}{q.replace('  ', ' ')} \n🔻تماشای آنلاین بدون فیلتر شکن: \n🆔👉 @dlmacvin_new"
 
                 print(Fuc)
